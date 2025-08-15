@@ -10,6 +10,11 @@
 #include <assert.h>
 #include <errno.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdarg.h>
+// #include <signal.h>    shutdown my pressing ctrl + c 
+#include <conio.h> // for _kbhit() and _getch()  -- > shutdown by pressing a char
+
 
 
 #include <winsock2.h>  /*for linus :#include <sys/socket.h>
@@ -20,11 +25,25 @@
 #define HOST        "127.0.0.1"
 #define PORT        "8080"
 
+
 typedef unsigned int int32;
 typedef unsigned short int int16;
 typedef unsigned char int8;
 
 
-void mainloop(int16);
-int main(int , char**);
+//to store values
+struct s_client{
+    int s;
+
+    //212.212.212.212.\0
+    char ip[16];
+    int16 port;
+};
+typedef struct s_client Client;
+
+
+void mainloop(SOCKET s);
+int initserver(int16);
+int main(int argc, char **argv);
+
 #endif 

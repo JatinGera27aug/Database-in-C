@@ -2,7 +2,24 @@
 
 bool scontinuation; // server continuation
 
-void mainloop(int16 port) {
+void mainloop(SOCKET s) {
+    struct sockaddr_in cli;
+    int len = sizeof(cli);
+    SOCKET s2 = accept(s, (struct sockaddr *)&cli, &len);
+    if (s2 == INVALID_SOCKET) {
+        printf("accept() failed: %d\n", WSAGetLastError());
+        return;
+    }
+
+    int16 port = (int16)ntohs(cli.sin_port);
+    char *ip = inet_ntoa(cli.sin_addr);
+    printf("Connection from %s:%d\n", ip, port);
+
+    closesocket(s2);
+}
+
+
+void initServer(int16 port) {
     WSADATA wsa;
     SOCKET s;
     struct sockaddr_in sock;
@@ -44,9 +61,34 @@ void mainloop(int16 port) {
 
     printf("Server listening on %s:%d...\n", HOST, port);
 
-    // Right now, we just close the server socket (no accept loop yet)
-    closesocket(s);
-    WSACleanup();
+    // Simulated accept loop until shutdown
+    u_long mode = 1;
+ioctlsocket(s, FIONBIO, &mode);
+
+while (scontinuation) {
+    if (_kbhit()) {
+        char ch = _getch();
+        if (ch == 'q') {
+            printf("\n'q' pressed, shutting down...\n");
+            scontinuation = false;
+            break;
+        }
+    }
+
+    struct sockaddr_in cli;
+    int len = sizeof(cli);
+    SOCKET s2 = accept(s, (struct sockaddr *)&cli, &len);
+    if (s2 != INVALID_SOCKET) {
+        int16 port = (int16)ntohs(cli.sin_port);
+        char *ip = inet_ntoa(cli.sin_addr);
+        printf("Connection from %s:%d\n", ip, port);
+        closesocket(s2);
+    } else {
+        // No connection right now — just sleep a bit to avoid high CPU usage
+        Sleep(50);
+    }
+}
+
 }
 
 int main(int argc, char *argv[]) {
@@ -54,7 +96,7 @@ int main(int argc, char *argv[]) {
     int16 port;
 
     if (argc < 2) {
-        sport = PORT; // Default port from cache22.h
+        sport = PORT;
     } else {
         sport = argv[1];
     }
@@ -62,10 +104,20 @@ int main(int argc, char *argv[]) {
     port = (int16)atoi(sport);
     scontinuation = true;
 
-    while (scontinuation) {
-        mainloop(port);
-    }
+    initServer(port);
 
+    printf("Shutdown the Server!\n");
     return 0;
 }
-//---->  runing by cntrl+shift+B
+
+
+
+
+
+
+
+
+
+//to run the server : mingw32-make   , then :  .\cache22
+
+//---->  runing by ctrl+shift+B
