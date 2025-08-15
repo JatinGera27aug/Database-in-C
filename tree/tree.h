@@ -5,15 +5,31 @@
 #include <string.h>
 #include <assert.h>
 #include <errno.h>
+
 #define TagRoot     1
 #define TagNode     2
 #define TagLeaf     4
+
+//Creating our Own Nullptr
+#define nullptr NULL
+
+
+#define find_last(x)      find_last_linear(x)
+#define NoError   0
+
+
+
+#define reterr(x) \
+    errno=(x); \
+    return nullptr
+
 
 //we will focus on the performance rather than the storage used
 typedef unsigned int int32;
 typedef unsigned short int int16;
 typedef unsigned char int8;
 typedef unsigned char Tag;
+
 
 
 struct s_node{

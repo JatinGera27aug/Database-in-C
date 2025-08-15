@@ -1,9 +1,23 @@
-flags=-Wall -02 -std= c2x
-ldflags=
-all :clean tree
+
+#runned by  : mingw32-make
+
+# Compiler & flags
+flags = -Wall -O2 -std=c2x
+ldflags =
+
+# Default target
+all: clean tree
+
+# Link object file into executable
 tree: tree.o
-	cc ${flags} $^ -o $@ ${ldflags}
-tree.o: tree.cc
-	cc ${flags} -c $^
+	cc $(flags) $^ -o $@.exe $(ldflags)
+
+# Compile source file into object file
+tree.o: tree.c
+	cc $(flags) -c $^
+
+# Clean build files (Windows PowerShell / CMD style)
 clean:
-	rm -f *.o tree
+	del /Q *.o 2>nul
+	del /Q tree.exe 2>nul
+

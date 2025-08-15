@@ -1,0 +1,3 @@
+/*In Memory Database bna rhe humm-->like Redis,,cache mai store hoga ji-->TEMPORARLY,,will be very fast,,but not Permananet...
+Login info vagera store hot hai jo kum time k liye websited mai vahan kaam aat ahai esa Database,,
+*/
