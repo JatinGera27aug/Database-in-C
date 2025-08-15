@@ -2,6 +2,7 @@
 
 #/*a Makefile in VS Code is basically your project’s build automation script — it saves you from manually typing long gcc commands every time you compile, 
 #   and it also handles multi-file dependencies for you. */
+
 # Compiler & flags
 flags = -O2 -Wall -std=c2x
 ldflags =
