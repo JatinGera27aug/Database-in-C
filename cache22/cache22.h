@@ -43,7 +43,7 @@ typedef struct s_client Client;
 
 void zero(int8 *,int16);
 DWORD WINAPI childloop(LPVOID param);
-void mainloop(SOCKET s);
+void mainloop(SOCKET s2, struct sockaddr_in cli);
 int initserver(int16);
 int main(int argc, char **argv);
 
