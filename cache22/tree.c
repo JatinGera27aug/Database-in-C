@@ -1,6 +1,7 @@
-
-
 #include "tree.h"
+
+//Nodes working as just connections to different data points
+//Leaves stores actual data
 Tree root = {
     .n = {
         .tag = (TagRoot | TagNode),
